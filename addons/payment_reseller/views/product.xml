@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="reseller_tree_view">
+			<field name="name">product.tree</field>
+			<field name="model">payment_reseller.products</field>
+			<field name="arch" type="xml">
+				<tree string="Products">
+					<field name="name"/>
+					<field name="rs_price"/>
+				</tree>
+			</field>
+		</record>
+	
+		<record model="ir.ui.view" id="reseller_form_view">
+			<field name="name">product.form</field>
+			<field name="model">payment_reseller.products</field>
+			<field name="arch" type="xml">
+				<form string="Reseller">
+					<sheet>
+						<group>
+							<field name="name"></field>
+							<field name="rs_price"></field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+<!-- 		<record model="ir.ui.view" id="reseller_search_view"> -->
+<!-- 			<field name="name">product.search</field> -->
+<!-- 			<field name="model">payment_reseller.products</field> -->
+<!-- 			<field name="arch" type="xml"> -->
+<!-- 				<search> -->
+<!-- 					<field name="name"/> -->
+<!-- 					<field name="rs_price"/> -->
+<!-- 				</search> -->
+<!-- 			</field>	 -->
+<!-- 		</record> -->
+		
+		<record model="ir.actions.act_window" id="product_list_action">
+			<field name="name">Products</field>
+			<field name="res_model">payment_reseller.products</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create"> Create first Products...
+				</p>	
+			</field>
+		</record>
+	</data>
+</openerp>

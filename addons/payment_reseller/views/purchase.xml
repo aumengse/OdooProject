@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+<!-- 		<record model="ir.ui.view" id="reseller_tree_view"> -->
+<!-- 			<field name="name">purchase.tree</field> -->
+<!-- 			<field name="model">payment_reseller.po</field> -->
+<!-- 			<field name="arch" type="xml"> -->
+<!-- 				<tree string="Purchase"> -->
+<!-- 					<field name="po_date"/> -->
+<!-- 					<field name="name"/> -->
+<!-- 					<field name="prod_name"></field> -->
+<!-- 				</tree> -->
+<!-- 			</field> -->
+<!-- 		</record> -->
+		
+	
+<!-- 		<record model="ir.ui.view" id="reseller_form_view"> -->
+<!-- 			<field name="name">purchase.form</field> -->
+<!-- 			<field name="model">payment_reseller.po</field> -->
+<!-- 			<field name="arch" type="xml"> -->
+<!-- 				<form string="Reseller"> -->
+<!-- 					<sheet> -->
+<!-- 						<group> -->
+<!-- 							<field name="po_date"></field> -->
+<!-- 							<field name="name"></field> -->
+<!-- 							<field name="prod_name"></field> -->
+<!-- 							<field name="qty"></field> -->
+<!-- 							<field name="discount"></field> -->
+<!-- 							<field name="price"></field> -->
+<!-- 						</group> -->
+<!-- 					</sheet> -->
+<!-- 				</form> -->
+<!-- 			</field> -->
+<!-- 		</record> -->
+		
+<!-- 		<record model="ir.ui.view" id="reseller_search_view"> -->
+<!-- 			<field name="name">reseller.search</field> -->
+<!-- 			<field name="model">payment_reseller.products</field> -->
+<!-- 			<field name="arch" type="xml"> -->
+<!-- 				<search> -->
+<!-- 					<field name="name"/> -->
+<!-- 					<field name="rs_price"/> -->
+<!-- 				</search> -->
+<!-- 			</field>	 -->
+<!-- 		</record> -->
+		
+		<record model="ir.actions.act_window" id="purchase_list_action">
+			<field name="name">Purchase Order</field>
+			<field name="res_model">payment_reseller.po</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create"> Create first Purchase...
+				</p>	
+			</field>
+		</record>
+	</data>
+</openerp>

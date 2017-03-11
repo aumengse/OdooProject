@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="reseller_tree_view">
+			<field name="name">reseller.tree</field>
+			<field name="model">payment_reseller.reseller</field>
+			<field name="arch" type="xml">
+				<tree string="Reseller">
+					<field name="name"/>
+					<field name="address"/>
+				</tree>
+			</field>
+		</record>
+		
+	
+		<record model="ir.ui.view" id="reseller_form_view">
+			<field name="name">reseller.form</field>
+			<field name="model">payment_reseller.reseller</field>
+			<field name="arch" type="xml">
+				<form string="Reseller">
+					<sheet>
+						<group>
+							<field name="name"></field>
+							<field name="address"></field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		
+<!-- 		<record model="ir.ui.view" id="reseller_search_view"> -->
+<!-- 			<field name="name">reseller.search</field> -->
+<!-- 			<field name="model">payment_reseller.reseller</field> -->
+<!-- 			<field name="arch" type="xml"> -->
+<!-- 				<search> -->
+<!-- 					<field name="name"/> -->
+<!-- 					<field name="address"/> -->
+<!-- 				</search> -->
+<!-- 			</field>	 -->
+<!-- 		</record> -->
+		
+		<record model="ir.actions.act_window" id="reseller_list_action">
+			<field name="name">Reseller</field>
+			<field name="res_model">payment_reseller.reseller</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create"> Create first Reseller...
+				</p>	
+			</field>
+		</record>
+		
+<!-- 		<menuitem id="main_payment_reseller_menu" name="Payment Reseller"/> -->
+<!-- 		<menuitem id="reseller_menu" name="Reseller"  -->
+<!-- 				  parent="main_payment_reseller_menu" -->
+<!-- 				  action="reseller_list_action"/> -->
+			
+	</data>
+</openerp>
