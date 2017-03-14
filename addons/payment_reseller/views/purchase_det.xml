@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="podet_tree_view">
+			<field name="name">purchase_det.tree</field>
+			<field name="model">payment_reseller.po_det</field>
+			<field name="arch" type="xml">
+				<tree string="Purchase Detail" editable="bottom">
+					<field name="prod_id"/>
+					<field name="price"/>
+					<field name="qty"/>
+					<field name="discount"/>
+					<field name="total" sum="total"/>
+				</tree>
+			</field>
+		</record>
+		
+	
+		<record model="ir.ui.view" id="podet_form_view">
+			<field name="name">purchase_det.form</field>
+			<field name="model">payment_reseller.po_det</field>
+			<field name="arch" type="xml">
+				<form string="Purchases Detail">
+					<sheet>
+						<group>
+								<field name="prod_id"></field>
+								<field name="price"/>
+								<field name="qty"></field>
+								<field name="discount"></field>
+								<field name="total"></field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+	
+	</data>
+</openerp>
