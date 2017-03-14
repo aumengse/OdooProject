@@ -21,9 +21,14 @@
 				<form string="Reseller">
 					<sheet>
 						<group>
-							<field name="po_date"></field>
-							<field name="name"></field>
-							<field name="prod_name"></field>
+							<group>
+								<field name="po_date"></field>
+								<field name="name"></field>
+								<field name="prod_name"></field>
+								</group>
+							<group>
+								<field name="invoice_num"></field>
+							</group>  
 						</group>
 					</sheet>
 				</form>

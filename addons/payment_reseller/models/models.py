@@ -21,8 +21,15 @@ class PO_Head(models.Model):
     _name = "payment_reseller.po_head"
     
     po_date =fields.Date(string="Date", default = lambda *a: time.strftime('%Y-%m-%d'))
+    invoice_num =fields.Char(string="Invoice",readonly=True)
     name = fields.Many2one('payment_reseller.reseller',string="Reseller")
     prod_name = fields.One2many('payment_reseller.po_det','po_head_id',string="Products")
+    
+    @api.model
+    def create(self, vals):
+        vals['invoice_num'] = self.env['ir.sequence'].get('inv_num')
+        
+        return super(PO_Head, self).create(vals)
     
 class PO_Det(models.Model):
     _name = "payment_reseller.po_det"
@@ -40,16 +47,16 @@ class PO_Det(models.Model):
             r.total= (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
      
     
-class payment_head(models.Model):
-    _name="payment_reseller.payment_head"
-          
-    name = fields.Char(string ="Name", related='reseller_po_id.name')
-    payment_date = fields.Date(string="Date",default = lambda *a: time.strftime('%Y-%m-%d'))
-    reseller_po_id = fields.Many2one('payment_reseller.po_head.name', string="Payment", required =True)
-    prod_paymentdet_id =fields.One2many('payment_reseller.payment_det','po_det_id',string="Products") 
-         
-class payment_det(models.Model):
-    _name ="payment_reseller.payment_det"
-         
-    payment_head_id = fields.Many2one('payment_reseller.payment_head')     
-    po_det_id = fields.Many2one('payment_reseller.po_det',string="Products")
+# class payment_head(models.Model):
+#     _name="payment_reseller.payment_head"
+#            
+#     name = fields.Char(string ="Name", related='reseller_po_id.name')
+#     payment_date = fields.Date(string="Date",default = lambda *a: time.strftime('%Y-%m-%d'))
+#     reseller_po_id = fields.Many2one('payment_reseller.po_head.name', string="Payment", required =True)
+#     prod_paymentdet_id =fields.One2many('payment_reseller.payment_det','po_det_id',string="Products") 
+#           
+# class payment_det(models.Model):
+#     _name ="payment_reseller.payment_det"
+#           
+#     payment_head_id = fields.Many2one('payment_reseller.payment_head')     
+#     po_det_id = fields.Many2one('payment_reseller.po_det',string="Products")
