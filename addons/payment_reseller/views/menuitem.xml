@@ -11,12 +11,12 @@
 		<menuitem id="reseller_menu" 
 				  name="Reseller" 
 				  parent="menu_payment_reseller"
-				  action="reseller_list_action"/>
+				  action="reseller_lists_action"/>
 				  
 		<menuitem id="product_menu" 
 				  name="Products" 
 				  parent="menu_payment_reseller"
-				  action="product_list_action"/>
+				  action="product_lists_action"/>
 				  
 		<menuitem id="purchase_menu" 
 				  name="Puchases" 

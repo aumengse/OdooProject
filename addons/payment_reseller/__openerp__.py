@@ -29,6 +29,7 @@
 #         'views/templates.xml',
         'views/reseller.xml',
         'views/product.xml',
+        'views/purchase_det.xml',
         'views/purchase.xml',
         'views/menuitem.xml',
     ],

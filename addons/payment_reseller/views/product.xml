@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
-		<record model="ir.ui.view" id="reseller_tree_view">
+		<record model="ir.ui.view" id="product_tree_view">
 			<field name="name">product.tree</field>
 			<field name="model">payment_reseller.products</field>
 			<field name="arch" type="xml">
@@ -12,7 +12,7 @@
 			</field>
 		</record>
 	
-		<record model="ir.ui.view" id="reseller_form_view">
+		<record model="ir.ui.view" id="product_form_view">
 			<field name="name">product.form</field>
 			<field name="model">payment_reseller.products</field>
 			<field name="arch" type="xml">
@@ -38,7 +38,7 @@
 <!-- 			</field>	 -->
 <!-- 		</record> -->
 		
-		<record model="ir.actions.act_window" id="product_list_action">
+		<record model="ir.actions.act_window" id="product_lists_action">
 			<field name="name">Products</field>
 			<field name="res_model">payment_reseller.products</field>
 			<field name="view_type">form</field>
