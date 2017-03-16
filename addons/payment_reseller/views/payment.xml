@@ -1,41 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 	<data>
-		<record model="ir.ui.view" id="podet_tree_view">
+		<record model="ir.ui.view" id="payment_tree_view">
 			<field name="name">payment.tree</field>
 			<field name="model">payment_reseller.payment</field>
 			<field name="arch" type="xml">
-				<tree string="Payment" editable="bottom">
+				<tree string="Payment">
 					<field name="payment_date"></field>
-					<field name="po_det_id"></field>	
+					<field name="or_num"></field>
+					<field name="invoice_id"></field>
+					<field name="rs_id"></field>	
 				</tree>
 			</field>
 		</record>
 		
 	
-		<record model="ir.ui.view" id="podet_form_view">
+		<record model="ir.ui.view" id="payment_form_view">
 			<field name="name">payment.form</field>
 			<field name="model">payment_reseller.payment</field>
 			<field name="arch" type="xml">
 				<form string="Payment">
 					<sheet>
 						<group>	
-							<field name="payment_date"></field>
-							<field name="reseller_po_id"></field>
-							<field name="prod_paymentdet_id"></field>
+							<group>
+								<field name="payment_date"></field>	
+							</group>
+							<group>
+								<field name="or_num"></field>
+							</group>
 						</group>
+						<group>
+							<field name="rs_id" context="{'has_po':'True'}"></field>
+							<field name="invoice_id"></field>
+							<field name="prods"></field> 
+						</group>
+						<group>
+							<group>
+							</group>
+							<group>
+								<field name="amt_render" style="text-align:right ; font-weight:bold"/>
+								<field name="overpaid" style="text-align:right"/>
+								<field name="underpaid" style="text-align:right"/>
+							</group>
+						</group>	
 					</sheet>
 				</form>
 			</field>
 		</record>
 		
-		<record model="ir.actions.act_window" id="purchase_list_action">
-			<field name="name">Purchase Order</field>
-			<field name="res_model">payment_reseller.po_head</field>
+		<record model="ir.actions.act_window" id="payment_list_action">
+			<field name="name">Payment</field>
+			<field name="res_model">payment_reseller.payment</field>
 			<field name="view_type">form</field>
 			<field name="view_mode">tree,form</field>
 			<field name="help" type="html">
-				<p class="oe_view_nocontent_create"> Create first Purchase...
+				<p class="oe_view_nocontent_create"> Create first Payment...
 				</p>	
 			</field>
 		</record>

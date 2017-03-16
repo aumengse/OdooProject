@@ -31,6 +31,7 @@
         'views/product.xml',
         'views/purchase_det.xml',
         'views/purchase.xml',
+        'views/payment.xml',
         'views/menuitem.xml',
     ],
     # only loaded in demonstration mode

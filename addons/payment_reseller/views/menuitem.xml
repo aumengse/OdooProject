@@ -23,5 +23,10 @@
 				  parent="menu_payment_reseller"
 				  action="purchase_list_action"/>
 
+		<menuitem id="payment_menu" 
+				  name="Payment" 
+				  parent="menu_payment_reseller"
+				  action="payment_list_action"/>
+		
 </data>
 </openerp>

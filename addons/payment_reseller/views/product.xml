@@ -7,6 +7,7 @@
 			<field name="arch" type="xml">
 				<tree string="Products">
 					<field name="name"/>
+					<field name="unit"></field>
 					<field name="rs_price"/>
 				</tree>
 			</field>
@@ -20,23 +21,13 @@
 					<sheet>
 						<group>
 							<field name="name"></field>
+							<field name="unit"></field>
 							<field name="rs_price"></field>
 						</group>
 					</sheet>
 				</form>
 			</field>
 		</record>
-		
-<!-- 		<record model="ir.ui.view" id="reseller_search_view"> -->
-<!-- 			<field name="name">product.search</field> -->
-<!-- 			<field name="model">payment_reseller.products</field> -->
-<!-- 			<field name="arch" type="xml"> -->
-<!-- 				<search> -->
-<!-- 					<field name="name"/> -->
-<!-- 					<field name="rs_price"/> -->
-<!-- 				</search> -->
-<!-- 			</field>	 -->
-<!-- 		</record> -->
 		
 		<record model="ir.actions.act_window" id="product_lists_action">
 			<field name="name">Products</field>

@@ -7,8 +7,8 @@
 			<field name="arch" type="xml">
 				<tree string="Purchase">
 					<field name="po_date"/>
-					<field name="name"/>
-<!-- 					<field name="prod_name"></field> -->
+					<field name="invoice_num"/>
+					<field name="reseller_id"/>
 				</tree>
 			</field>
 		</record>
@@ -23,13 +23,13 @@
 						<group>
 							<group>
 								<field name="po_date"></field>
-								<field name="name"></field>
-								<field name="prod_name"></field>
+								<field name="reseller_id"></field>
 								</group>
 							<group>
 								<field name="invoice_num"></field>
-							</group>  
+							</group> 
 						</group>
+						<field name="prod_name"></field> 
 					</sheet>
 				</form>
 			</field>
