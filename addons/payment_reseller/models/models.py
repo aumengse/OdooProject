@@ -7,6 +7,22 @@ import time
 class Reseller(models.Model):
     _name = 'payment_reseller.reseller'
     
+    def _search(self, cr, uid, args, offset=0, limit=None, order=None,
+                    context={}, count=False, access_rights_uid=None):
+    
+            if context:
+                if 'has_po' in context:
+                    if context['has_po']:
+                        res_pohead = self.pool.get('payment_reseller.po_head').search(cr, uid,[('reseller_id','!=', False)])
+                        reseller_ids = []
+                        for rec_pohead in res_pohead:
+                            get_pohead = self.pool.get('payment_reseller.po_head').browse(cr, uid, rec_pohead)
+                            reseller_ids.append(get_pohead.reseller_id.id)
+                        args.append(("id","in",reseller_ids))
+            
+            return super(Reseller, self)._search(cr, uid, args, offset=offset, limit=limit, order=order,
+                                            context=context, count=count, access_rights_uid=access_rights_uid)
+
     name =fields.Char(string="Fullname", required=True)
     address = fields.Char(string="Address")
     
@@ -20,25 +36,6 @@ class Prod(models.Model):
     
 class PO_Head(models.Model):
     _name = "payment_reseller.po_head"
-    
-    def _search(self, cr, uid, args, offset=0, limit=None, order=None,
-                    context={}, count=False, access_rights_uid=None):
-    
-            if context:
-                print 'context', context
-                if 'unpaid_po' in context:
-                    if context['unpaid_po']:
-                        res_payment = self.pool.get('payment_reseller.payment').search(cr, uid,[('invoice_id','!=', False)])
-                        inv_ids = []
-                        print 'res_payment', res_payment
-                        for rec_payment in res_payment:
-                            get_pohead = self.pool.get('payment_reseller.po_head').browse(cr, uid, rec_payment)
-                            inv_ids.append(get_pohead.invoice_num.id)
-                         
-                        args.append(("id","in",inv_ids))
-            
-            return super(PO_Head, self)._search(cr, uid, args, offset=offset, limit=limit, order=order,
-                                            context=context, count=count, access_rights_uid=access_rights_uid)
     
     name = fields.Char(string="Name", related = "invoice_num")
     po_date =fields.Date(string="Date", default = lambda *a: time.strftime('%Y-%m-%d'))
@@ -71,8 +68,6 @@ class PO_Det(models.Model):
     def _get_price(self):
         item = self.prod_id
         
-        print 'item',item
-        
         get_item_price = self.env['payment_reseller.products'].browse(item.id)
         self.price =   get_item_price.rs_price
         
@@ -80,7 +75,6 @@ class PO_Det(models.Model):
     @api.model
     def create(self, vals):
         prod_id = vals['prod_id']
-        print 'createitem', prod_id
         get_item_price = self.env['payment_reseller.products'].browse(prod_id)
         vals['price'] = get_item_price.rs_price
         
@@ -96,50 +90,112 @@ class payment(models.Model):
     invoice_id = fields.Many2one('payment_reseller.po_head', string="Invoice")
     prods = fields.One2many(related="invoice_id.prod_name", readonly = True)
     amt_render = fields.Float(string="Amount Render")
-    overpaid = fields.Float(string="Over Payment" ,readonly=True, compute='_compute_amt')
-    underpaid = fields.Float(string="Under Payment" ,readonly=True, compute='_compute_amt')
-    
+    overpaid = fields.Float(string="Over Payment" ,readonly=True)
+    underpaid = fields.Float(string="Under Payment" ,readonly=True)
+    outstanding = fields.Float(string="Outstanding Balance" ,readonly=True)
+    Total = fields.Float(string="TOTAL", readonly = True, compute='_compute_total')
+   
     @api.model
     def create(self, vals):
+     # FOR INVOICE SEQUENCE   
         vals['or_num'] = self.env['ir.sequence'].get('or_code')
-        
+             
+    # TO CREATE OUSTANDING ONCHANGE
+        selected_reseller =  vals['rs_id']
+        payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller)],order='id desc',limit=1)
+        for r in payment_list:
+            vals['outstanding'] = r.underpaid * (-1)
+            
+#     TO CREATE UNDERPAID AND OVERPAID ONCHANGE   
+        selected_invoice = vals['invoice_id']
+        print 'selected_invoice', selected_invoice
+        inv_list = self.env['payment_reseller.po_det'].search([('po_head_id','=',selected_invoice)])
+         
+        qty_price = 0.00
+        total_pur = 0.00
+        for r in inv_list:
+            qty_price = (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
+            total_pur = total_pur + qty_price
+            qty_price = 0.00
+
+        selected_reseller =  vals['rs_id']
+        payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller)],order='id desc',limit=1)
+        bal = 0.00
+        for r in payment_list:
+            bal = r.underpaid * (-1)
+
+        pymt = vals['amt_render'] - (total_pur + bal)         
+
+        print 'pymt', pymt
+        if pymt > 0:
+             vals['overpaid'] = pymt
+        else:
+             vals['underpaid'] = pymt
+         
         return super(payment, self).create(vals)
     
     @api.onchange('rs_id')
     def _onchange_reseller(self):
         selected_reseller = self.rs_id.id
         inv_list = self.env['payment_reseller.po_head'].search([('reseller_id','=',selected_reseller)])
-    
+        payment_inv_list = self.search([('rs_id','=',selected_reseller)])
+#         payment_inv_list = self.env['payment_reseller.payment'].browse(self.invoice_id)
         inv_lists= []
+        p_inv_lists =[]
+        for i in payment_inv_list:
+            p_inv_lists.append(i.invoice_id.id)
         
+     
         for r in inv_list:
-            inv_lists.append(r.id)
+            if r.id in p_inv_lists:
+                print 'IN LIST'
+                
+            else:
+                print 'NOT IN LIST'
+                inv_lists.append(r.id)
+        print '...',inv_lists
         return {'domain':{'invoice_id':[('id','in',inv_lists)]},}
     
-    @api.depends('amt_render')
-    def _compute_amt(self):
-        selected_invoice =  self.invoice_id
-        print 'selected_invoice', selected_invoice.id
+    @api.onchange('amt_render')
+    def _compute_payment(self):
+#         selected_invoice =  self.invoice_id
+#         
+#         inv_list = self.env['payment_reseller.po_det'].search([('po_head_id','=',selected_invoice.id)])
+#      
+#         qty_price = 0.00
+#         total_pur = 0.00
+#         for r in inv_list:
+#             qty_price = (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
+#             total_pur = total_pur + qty_price
+#             qty_price = 0.00
         
-        inv_list = self.env['payment_reseller.po_det'].search([('po_head_id','=',selected_invoice.id)])
-        print 'inv_list', inv_list
-        
-        qty_price = 0.00
-        total_pur = 0.00
-        for r in inv_list:
-            print 'qty',r.qty
-            print 'price', r.price
-            
-            qty_price = (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
-            total_pur = total_pur + qty_price
-            qty_price = 0.00
-        print 'total_pur', total_pur
-        
-        payment = self.amt_render - total_pur
-        
-        print 'payment', payment
+        payment = self.amt_render - self.Total
         
         if payment > 0:
             self.overpaid = payment
         else:
             self.underpaid = payment
+            
+    @api.depends('invoice_id')
+    def _compute_total(self):
+        selected_invoice =  self.invoice_id
+        
+        inv_list = self.env['payment_reseller.po_det'].search([('po_head_id','=',selected_invoice.id)])
+     
+        qty_price = 0.00
+        total_pur = 0.00
+        for r in inv_list:
+            qty_price = (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
+            total_pur = total_pur + qty_price + self.outstanding
+            qty_price = 0.00
+        self.Total = total_pur
+        
+    @api.onchange('rs_id')
+    def _get_balance(self):
+        selected_reseller =  self.rs_id
+        payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller.id)],order='id desc',limit=1)
+        for r in payment_list:
+            self.outstanding = r.underpaid * (-1)
+            self.Total = self.outstanding
+        
+        

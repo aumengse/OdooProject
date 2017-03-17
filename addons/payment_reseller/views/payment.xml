@@ -26,21 +26,23 @@
 								<field name="payment_date"></field>	
 							</group>
 							<group>
-								<field name="or_num"></field>
+								<field name="or_num" style="font-size:15pt; text-align:right"></field>
 							</group>
 						</group>
 						<group>
 							<field name="rs_id" context="{'has_po':'True'}"></field>
 							<field name="invoice_id"></field>
-							<field name="prods"></field> 
 						</group>
+						<field name="prods"></field> 
 						<group>
 							<group>
 							</group>
 							<group>
+								<field name="outstanding" style="text-align:right"/>
+								<field name="Total" style="text-align:right; font-size:15pt"/>
 								<field name="amt_render" style="text-align:right ; font-weight:bold"/>
 								<field name="overpaid" style="text-align:right"/>
-								<field name="underpaid" style="text-align:right"/>
+								<field name="underpaid" style="text-align:right; color:red"/>
 							</group>
 						</group>	
 					</sheet>
