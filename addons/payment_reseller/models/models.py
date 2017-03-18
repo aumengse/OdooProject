@@ -36,6 +36,7 @@ class Prod(models.Model):
     
 class PO_Head(models.Model):
     _name = "payment_reseller.po_head"
+    _order = 'po_date desc'
     
     name = fields.Char(string="Name", related = "invoice_num")
     po_date =fields.Date(string="Date", default = lambda *a: time.strftime('%Y-%m-%d'))
@@ -82,18 +83,19 @@ class PO_Det(models.Model):
         
 class payment(models.Model):
     _name="payment_reseller.payment"
-             
+    _order = 'payment_date desc'
+     
     name = fields.Char(string ="Name", related ="or_num")
     payment_date = fields.Date(string="Date", default = lambda *a: time.strftime('%Y-%m-%d'))
     or_num =fields.Char(string="Receipt", readonly=True)
     rs_id = fields.Many2one('payment_reseller.reseller', string='Reseller')
     invoice_id = fields.Many2one('payment_reseller.po_head', string="Invoice")
     prods = fields.One2many(related="invoice_id.prod_name", readonly = True)
-    amt_render = fields.Float(string="Amount Render")
-    overpaid = fields.Float(string="Over Payment" ,readonly=True)
-    underpaid = fields.Float(string="Under Payment" ,readonly=True)
-    outstanding = fields.Float(string="Outstanding Balance" ,readonly=True)
-    Total = fields.Float(string="TOTAL", readonly = True, compute='_compute_total')
+    amt_render = fields.Float(string="Amount Render", digits =(16,2))
+    overpaid = fields.Float(string="Over Payment" ,readonly=True, digits =(16,2))
+    underpaid = fields.Float(string="Under Payment" ,readonly=True, digits =(16,2))
+    outstanding = fields.Float(string="Outstanding Balance" ,readonly=True, digits =(16,2))
+    Total = fields.Float(string="TOTAL", readonly = True, compute='_compute_total', digits= (16,2))
    
     @api.model
     def create(self, vals):
@@ -104,7 +106,10 @@ class payment(models.Model):
         selected_reseller =  vals['rs_id']
         payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller)],order='id desc',limit=1)
         for r in payment_list:
-            vals['outstanding'] = r.underpaid * (-1)
+            if r.underpaid != 0:
+                vals['outstanding'] = r.underpaid * (-1)
+            else:
+                vals['outstanding'] = r.overpaid * (-1)
             
 #     TO CREATE UNDERPAID AND OVERPAID ONCHANGE   
         selected_invoice = vals['invoice_id']
@@ -118,14 +123,19 @@ class payment(models.Model):
             total_pur = total_pur + qty_price
             qty_price = 0.00
 
+        print 'total_pur...',total_pur
         selected_reseller =  vals['rs_id']
         payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller)],order='id desc',limit=1)
         bal = 0.00
         for r in payment_list:
-            bal = r.underpaid * (-1)
-
-        pymt = vals['amt_render'] - (total_pur + bal)         
-
+            if r.underpaid != 0:
+                bal = r.underpaid * (-1)
+            else:
+                bal = r.overpaid * (-1)
+                
+        pymt = vals['amt_render'] - (total_pur + (bal))         
+        print 'total_pur', total_pur
+        print 'bal', bal
         print 'pymt', pymt
         if pymt > 0:
              vals['overpaid'] = pymt
@@ -139,7 +149,7 @@ class payment(models.Model):
         selected_reseller = self.rs_id.id
         inv_list = self.env['payment_reseller.po_head'].search([('reseller_id','=',selected_reseller)])
         payment_inv_list = self.search([('rs_id','=',selected_reseller)])
-#         payment_inv_list = self.env['payment_reseller.payment'].browse(self.invoice_id)
+
         inv_lists= []
         p_inv_lists =[]
         for i in payment_inv_list:
@@ -158,16 +168,6 @@ class payment(models.Model):
     
     @api.onchange('amt_render')
     def _compute_payment(self):
-#         selected_invoice =  self.invoice_id
-#         
-#         inv_list = self.env['payment_reseller.po_det'].search([('po_head_id','=',selected_invoice.id)])
-#      
-#         qty_price = 0.00
-#         total_pur = 0.00
-#         for r in inv_list:
-#             qty_price = (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
-#             total_pur = total_pur + qty_price
-#             qty_price = 0.00
         
         payment = self.amt_render - self.Total
         
@@ -186,16 +186,28 @@ class payment(models.Model):
         total_pur = 0.00
         for r in inv_list:
             qty_price = (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
-            total_pur = total_pur + qty_price + self.outstanding
+#             total_pur = total_pur + qty_price + (self.outstanding)
+            total_pur = total_pur + qty_price
+            
+            print 'price*qty', qty_price
+            print '...', total_pur
             qty_price = 0.00
-        self.Total = total_pur
+            
+            
+       
+        self.Total = total_pur + (self.outstanding)
         
     @api.onchange('rs_id')
     def _get_balance(self):
         selected_reseller =  self.rs_id
         payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller.id)],order='id desc',limit=1)
         for r in payment_list:
-            self.outstanding = r.underpaid * (-1)
-            self.Total = self.outstanding
-        
+            print '...UN', r.underpaid
+            print '...OV', r.overpaid
+            if r.underpaid != 0:
+                self.outstanding = r.underpaid * (-1)
+                self.Total = self.outstanding
+            elif r.overpaid != 0:
+                self.outstanding = r.overpaid * (-1)
+                self.Total = self.outstanding
         
