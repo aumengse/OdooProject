@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+  		<record id="inv_seq" model="ir.sequence">
+           <field name="name">Invoice Seq</field>
+           <field name="code">inv_num</field>
+           <field name="prefix">INV</field>
+           <field eval="1" name="number_next"/>
+           <field eval="1" name="number_increment"/>
+           <field eval="6" name="padding"/>
+  		</record>
+  		
+  		<record id="or_seq" model="ir.sequence">
+           <field name="name">Receipt Seq</field>
+           <field name="code">or_code</field>
+           <field name="prefix">OR</field>
+           <field eval="1" name="number_next"/>
+           <field eval="1" name="number_increment"/>
+           <field eval="6" name="padding"/>
+  		</record>
+  	</data>
+  </openerp>

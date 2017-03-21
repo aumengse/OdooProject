@@ -30,8 +30,8 @@
 							</group>
 						</group>
 						<group>
-							<field name="rs_id" context="{'has_po':'True'}" readonly = "1"></field>
-							<field name="invoice_id" readonly = "1"></field>
+							<field name="rs_id" context="{'has_po':'True'}" attrs="{'readonly': [('or_num','!=',False)]}"></field>
+							<field name="invoice_id" attrs="{'readonly': [('or_num','!=',False)]}"></field>
 						</group>
 						<field name="prods"></field> 
 						<group>

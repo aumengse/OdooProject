@@ -121,10 +121,12 @@ class payment(models.Model):
           
             if p > 0:
                 vals['overpaid'] = p
-            else:
+            elif p < 0:
                 vals['underpaid'] = p
-           
-           
+            else:
+                vals['overpaid'] = 0.00
+                vals['underpaid'] = 0.00
+                
         res_id = super(payment, self).write(vals)
           
         return res_id 
@@ -157,8 +159,11 @@ class payment(models.Model):
         
         if payment > 0:
             self.overpaid = payment
-        else:
+        elif payment < 0 :
             self.underpaid = payment
+        else:
+            self.overpaid = 0.00
+            self.underpaid = 0.00
             
     @api.depends('invoice_id')
     def _compute_total(self):
