@@ -3,6 +3,8 @@
 from openerp import api, fields, models
 from datetime import datetime, timedelta
 import time
+from methods import _create_payment
+from methods import _get_total
 
 class Reseller(models.Model):
     _name = 'payment_reseller.reseller'
@@ -83,7 +85,7 @@ class PO_Det(models.Model):
         
 class payment(models.Model):
     _name="payment_reseller.payment"
-    _order = 'payment_date desc'
+    _order = 'id desc'
      
     name = fields.Char(string ="Name", related ="or_num")
     payment_date = fields.Date(string="Date", default = lambda *a: time.strftime('%Y-%m-%d'))
@@ -103,47 +105,30 @@ class payment(models.Model):
         vals['or_num'] = self.env['ir.sequence'].get('or_code')
              
     # TO CREATE OUSTANDING ONCHANGE
-        selected_reseller =  vals['rs_id']
-        payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller)],order='id desc',limit=1)
-        for r in payment_list:
-            if r.underpaid != 0:
-                vals['outstanding'] = r.underpaid * (-1)
-            else:
-                vals['outstanding'] = r.overpaid * (-1)
-            
-#     TO CREATE UNDERPAID AND OVERPAID ONCHANGE   
-        selected_invoice = vals['invoice_id']
-        print 'selected_invoice', selected_invoice
-        inv_list = self.env['payment_reseller.po_det'].search([('po_head_id','=',selected_invoice)])
-         
-        qty_price = 0.00
-        total_pur = 0.00
-        for r in inv_list:
-            qty_price = (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
-            total_pur = total_pur + qty_price
-            qty_price = 0.00
-
-        print 'total_pur...',total_pur
-        selected_reseller =  vals['rs_id']
-        payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller)],order='id desc',limit=1)
-        bal = 0.00
-        for r in payment_list:
-            if r.underpaid != 0:
-                bal = r.underpaid * (-1)
-            else:
-                bal = r.overpaid * (-1)
-                
-        pymt = vals['amt_render'] - (total_pur + (bal))         
-        print 'total_pur', total_pur
-        print 'bal', bal
-        print 'pymt', pymt
-        if pymt > 0:
-             vals['overpaid'] = pymt
-        else:
-             vals['underpaid'] = pymt
-         
+    
+        _create_payment(self,vals)
+   
         return super(payment, self).create(vals)
     
+    @api.multi   
+    def write(self, vals):
+        if 'amt_render' in vals:
+            vals['amt_render'] = vals.get('amt_render')
+            
+            
+            computed_total = _get_total(self)
+            p = vals['amt_render'] - computed_total
+          
+            if p > 0:
+                vals['overpaid'] = p
+            else:
+                vals['underpaid'] = p
+           
+           
+        res_id = super(payment, self).write(vals)
+          
+        return res_id 
+     
     @api.onchange('rs_id')
     def _onchange_reseller(self):
         selected_reseller = self.rs_id.id
@@ -163,7 +148,6 @@ class payment(models.Model):
             else:
                 print 'NOT IN LIST'
                 inv_lists.append(r.id)
-        print '...',inv_lists
         return {'domain':{'invoice_id':[('id','in',inv_lists)]},}
     
     @api.onchange('amt_render')
@@ -186,14 +170,9 @@ class payment(models.Model):
         total_pur = 0.00
         for r in inv_list:
             qty_price = (r.qty * r.price) - ((r.qty * r.price) * (r.discount/100))
-#             total_pur = total_pur + qty_price + (self.outstanding)
             total_pur = total_pur + qty_price
-            
-            print 'price*qty', qty_price
-            print '...', total_pur
+        
             qty_price = 0.00
-            
-            
        
         self.Total = total_pur + (self.outstanding)
         
@@ -202,8 +181,6 @@ class payment(models.Model):
         selected_reseller =  self.rs_id
         payment_list = self.env['payment_reseller.payment'].search([('rs_id','=',selected_reseller.id)],order='id desc',limit=1)
         for r in payment_list:
-            print '...UN', r.underpaid
-            print '...OV', r.overpaid
             if r.underpaid != 0:
                 self.outstanding = r.underpaid * (-1)
                 self.Total = self.outstanding

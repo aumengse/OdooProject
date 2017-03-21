@@ -23,15 +23,15 @@
 					<sheet>
 						<group>	
 							<group>
-								<field name="payment_date"></field>	
+								<field name="payment_date" readonly = "1"></field>	
 							</group>
 							<group>
 								<field name="or_num" style="font-size:15pt; text-align:right"></field>
 							</group>
 						</group>
 						<group>
-							<field name="rs_id" context="{'has_po':'True'}"></field>
-							<field name="invoice_id"></field>
+							<field name="rs_id" context="{'has_po':'True'}" readonly = "1"></field>
+							<field name="invoice_id" readonly = "1"></field>
 						</group>
 						<field name="prods"></field> 
 						<group>
