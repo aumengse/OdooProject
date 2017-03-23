@@ -98,6 +98,7 @@ class payment(models.Model):
     underpaid = fields.Float(string="Under Payment" ,readonly=True, digits =(16,2))
     outstanding = fields.Float(string="Outstanding Balance" ,readonly=True, digits =(16,2))
     Total = fields.Float(string="TOTAL", readonly = True, compute='_compute_total', digits= (16,2))
+    color = fields.Integer()
    
     @api.model
     def create(self, vals):

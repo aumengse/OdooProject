@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="expdet_tree_view">
+			<field name="name">expense_det.tree</field>
+			<field name="model">payment_reseller.expense_det</field>
+			<field name="arch" type="xml">
+				<tree string="Espense Detail" editable="bottom">
+					<field name="desc"></field>
+					<field name="amt" sum="amt"></field>	
+				</tree>
+			</field>
+		</record>
+		
+	
+		<record model="ir.ui.view" id="expdet_form_view">
+			<field name="name">espense_det.form</field>
+			<field name="model">payment_reseller.expense_det</field>
+			<field name="arch" type="xml">
+				<form string="Expense Detail">
+					<sheet>
+						<group>
+							<field name="desc"></field>
+							<field name="amt" sum="amt"></field>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+	
+	</data>
+</openerp>

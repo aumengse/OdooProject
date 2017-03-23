@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record model="ir.ui.view" id="exphead_tree_view">
+			<field name="name">expense.tree</field>
+			<field name="model">payment_reseller.expenses</field>
+			<field name="arch" type="xml">
+				<tree string="Expense">
+					<field name="trans_date"/>
+					<field name="expense_num"/>
+					<field name="reseller_id"/>
+				</tree>
+			</field>
+		</record>
+		
+	
+		<record model="ir.ui.view" id="exphead_form_view">
+			<field name="name">expense.form</field>
+			<field name="model">payment_reseller.expenses</field>
+			<field name="arch" type="xml">
+				<form string="Expense">
+					<sheet>
+						<group>
+							<group>
+								<field name="trans_date"></field>
+								<field name="reseller_id"></field>
+								</group>
+							<group>
+								<field name="expense_num" style="font-size:15pt; text-align:right"></field>
+							</group> 
+						</group>
+						<field name="expenses_ids"></field> 
+					</sheet>
+				</form>
+			</field>
+		</record>
+	
+		
+		<record model="ir.actions.act_window" id="expense_list_action">
+			<field name="name">Expenses</field>
+			<field name="res_model">payment_reseller.expenses</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create"> Create first Expense...
+				</p>	
+			</field>
+		</record>
+	</data>
+</openerp>

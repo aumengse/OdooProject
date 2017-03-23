@@ -18,5 +18,14 @@
            <field eval="1" name="number_increment"/>
            <field eval="6" name="padding"/>
   		</record>
+  		
+  		<record id="exp_seq" model="ir.sequence">
+           <field name="name">Expense Seq</field>
+           <field name="code">exp_code</field>
+           <field name="prefix">EXP</field>
+           <field eval="1" name="number_next"/>
+           <field eval="1" name="number_increment"/>
+           <field eval="6" name="padding"/>
+  		</record>
   	</data>
   </openerp>

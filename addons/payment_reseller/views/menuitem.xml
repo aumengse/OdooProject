@@ -22,6 +22,11 @@
 				  name="Puchases" 
 				  parent="menu_payment_reseller"
 				  action="purchase_list_action"/>
+				  
+		<menuitem id="expense_menu" 
+				  name="Expenses" 
+				  parent="menu_payment_reseller"
+				  action="expense_list_action"/>
 
 		<menuitem id="payment_menu" 
 				  name="Payment" 
