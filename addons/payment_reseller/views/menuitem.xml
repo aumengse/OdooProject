@@ -5,33 +5,43 @@
 		<menuitem id="main_payment_reseller_menu" 
 				  name="Payment Reseller"/>
 		<menuitem id="menu_payment_reseller"
-				  parent="main_payment_reseller_menu" 
+				  parent="main_payment_reseller_menu"
 				  name="Payment Reseller"/>
 		
-		<menuitem id="reseller_menu" 
-				  name="Reseller" 
-				  parent="menu_payment_reseller"
-				  action="reseller_lists_action"/>
+			<menuitem id="reseller_menu" 
+					  name="Reseller" 
+					  parent="menu_payment_reseller"
+					  action="reseller_lists_action"/>
+					  
+			<menuitem id="product_menu" 
+					  name="Products" 
+					  parent="menu_payment_reseller"
+					  action="product_lists_action"/>
+					  
+			<menuitem id="purchase_menu" 
+					  name="Puchases" 
+					  parent="menu_payment_reseller"
+					  action="purchase_list_action"/>
+					  
+			<menuitem id="expense_menu" 
+					  name="Expenses" 
+					  parent="menu_payment_reseller"
+					  action="expense_list_action"/>
+	
+			<menuitem id="payment_menu" 
+					  name="Payment" 
+					  parent="menu_payment_reseller"
+					  action="payment_list_action"/>
+					
+				
+		<menuitem id="report_payment_reseller"
+				  parent="main_payment_reseller_menu" 
+				  name="Report"/>
 				  
-		<menuitem id="product_menu" 
-				  name="Products" 
-				  parent="menu_payment_reseller"
-				  action="product_lists_action"/>
-				  
-		<menuitem id="purchase_menu" 
-				  name="Puchases" 
-				  parent="menu_payment_reseller"
-				  action="purchase_list_action"/>
-				  
-		<menuitem id="expense_menu" 
-				  name="Expenses" 
-				  parent="menu_payment_reseller"
-				  action="expense_list_action"/>
+		<menuitem id="report_menu" 
+				  name="Reports" 
+				  parent="report_payment_reseller"
+				  action="report_list_action"/>
 
-		<menuitem id="payment_menu" 
-				  name="Payment" 
-				  parent="menu_payment_reseller"
-				  action="payment_list_action"/>
-		
 </data>
 </openerp>

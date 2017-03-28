@@ -73,8 +73,7 @@ class PO_Det(models.Model):
         
         get_item_price = self.env['payment_reseller.products'].browse(item.id)
         self.price =   get_item_price.rs_price
-        
-        
+               
     @api.model
     def create(self, vals):
         prod_id = vals['prod_id']

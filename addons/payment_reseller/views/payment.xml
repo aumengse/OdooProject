@@ -14,7 +14,6 @@
 			</field>
 		</record>
 		
-	
 		<record model="ir.ui.view" id="payment_form_view">
 			<field name="name">payment.form</field>
 			<field name="model">payment_reseller.payment</field>

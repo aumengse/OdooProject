@@ -8,7 +8,7 @@
 				<tree string="Expense">
 					<field name="trans_date"/>
 					<field name="expense_num"/>
-					<field name="reseller_id"/>
+					<field name="resell_id"/>
 				</tree>
 			</field>
 		</record>
@@ -23,7 +23,7 @@
 						<group>
 							<group>
 								<field name="trans_date"></field>
-								<field name="reseller_id"></field>
+								<field name="resell_id"></field>
 								</group>
 							<group>
 								<field name="expense_num" style="font-size:15pt; text-align:right"></field>

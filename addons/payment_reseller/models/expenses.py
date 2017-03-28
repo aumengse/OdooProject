@@ -9,9 +9,8 @@ class Expenses(models.Model):
     name = fields.Char(string="Name", related = "expense_num")
     trans_date =fields.Date(string="Date", default = lambda *a: time.strftime('%Y-%m-%d'))
     expense_num =fields.Char(string="Document No.",readonly=True)
-    reseller_id = fields.Many2one('payment_reseller.reseller',string="Reseller")
+    resell_id = fields.Many2one('payment_reseller.reseller',string="Reseller")
     expenses_ids = fields.One2many('payment_reseller.expense_det','exp_id_head',string="Expenses")
-    
     
     @api.model
     def create(self, vals):

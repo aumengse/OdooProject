@@ -27,5 +27,14 @@
            <field eval="1" name="number_increment"/>
            <field eval="6" name="padding"/>
   		</record>
+  		
+  		<record id="base.main_company" model="res.company">
+            <field name="name">Fashion Centre</field>
+            <field name="abbreviation">FC</field>
+            <field name="rml_header1">...go on trends!</field>
+            <field name="currency_id" ref="base.PHP"/>
+            <field name="logo" type="base64" file="payment_reseller_data/static/src/img/fc_logo.png"/>
+            <!-- <field name="partner_id" ref="base.main_partner"/> -->
+        </record>
   	</data>
   </openerp>
