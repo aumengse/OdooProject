@@ -1,0 +1,80 @@
+<openerp>
+<data>
+    <report
+        id="report_payment"
+        model="payment_reseller.payment"
+        string="Payment Report"
+        name="payment_reseller.report_payment_view"
+        file="payment_reseller.report_payment"
+        report_type="qweb-pdf" />
+
+    <template id="report_payment_view">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="report.external_layout">
+                    <div class="page">
+                    	<br/><br/><br/>
+                        <h2 t-field="doc.name" style="text-align:right"></h2>
+                        <p style="margin-top:0px; text-align:right"><span t-field="doc.payment_date"/></p>
+                        <br/>
+                        <strong><p>Reseller: <span t-field="doc.rs_id"/></p></strong>
+                        <strong><p>Invoice: <span t-field="doc.invoice_id"/></p></strong>
+                
+                        <table style="width:100%" class="table table-bordered">
+                       		<tr>
+	                        	<th>PRODUCT</th>
+	                        	<th>PRICE</th>
+	                        	<th>QTY</th>
+	                        	<th>DISCOUNT</th>
+	                        	<th>TOTAL</th>
+                        		</tr>
+                        	<t t-foreach="doc.prods" t-as="Product">
+                     		<tr>
+	                     		<td>
+	                       			<span t-field="Product.prod_id.name"/>
+	                       		</td>
+	                       		<td align="right">
+	                       			<span t-esc="'%.2f'%(Product.price)" />
+	                       		 </td>
+	                       		<td align="right">
+	                       			<span t-esc="'%.2f'%(Product.qty)"/>
+	                       		</td>
+	                       		<td align="right">
+	                       			<span t-esc="'%.2f'%(Product.discount)"/>
+	                       		</td>
+	                       		<td align="right">
+	                       			<span t-esc="'%.2f'%(Product.total)"/>
+	                       		</td>
+                     		</tr>
+                        	</t>
+                        	
+                        	<t t-set="test_variable" t-value="0" />
+	                    	<t t-foreach="docs" t-as="i"> 
+								<t t-set="test_variable" t-value="test_variable+i.Total"/> 
+							</t> 
+                        	<tr>
+                        		<td><strong>Sum</strong></td>
+								<td colspan="4" align="right">
+									<t t-esc="'%.2f'%(test_variable)"/>
+								</td>
+                        	</tr>
+                        	<tr>
+                        		<td><strong>Amount Tender</strong></td>
+								<td colspan="4" align="right"><t t-esc="'%.2f'%(docs.amt_render)"/> </td>
+                        	</tr>
+                        	<tr>
+                        		<td><strong>Underpaid</strong></td>
+								<td colspan="4" align="right"><t t-esc="'%.2f'%(docs.underpaid)"/> </td>
+                        	</tr>
+                        	<tr>
+                        		<td><strong>Overpaid</strong></td>
+								<td colspan="4" align="right"><t t-esc="'%.2f'%(docs.overpaid)"/> </td>
+                        	</tr>
+                        </table>	
+                     </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</data>
+</openerp>
