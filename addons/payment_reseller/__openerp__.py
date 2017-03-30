@@ -34,7 +34,7 @@
         'views/payment.xml',
         'views/expense_det.xml',
         'views/expense.xml',
-        'views/report.xml',
+        'views/report_handler.xml',
         'views/reports.xml',
         'views/menuitem.xml',
     ],
