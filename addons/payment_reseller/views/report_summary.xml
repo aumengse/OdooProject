@@ -1,0 +1,20 @@
+<!--<openerp>
+<data>
+	<record id="paperformat_legal_landscape" model="report.paperformat">
+		<field name="name">Legal</field>
+		<field name="default" eval="True"/>
+		<field name="format">Legal</field>
+		<field name="orientation">Landscape</field>
+		<field name="margin_top">5</field>
+		<field name="margin_bottom">5</field>
+		<field name="margin_left">5</field>
+		<field name="margin_right">5</field>
+		<field name="header_line" eval="False"/>
+		<field name="header_spacing">0</field>
+		<field name="dpi">90</field>
+	</record>
+
+	<report id ="summary_report"
+			model=""/>
+</data>
+</openerp>-->

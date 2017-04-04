@@ -1,11 +1,11 @@
 <openerp>
 <data>
     <report
-        id="report_payment"
+        id="report_paymentss"
         model="payment_reseller.payment"
         string="Payment Report"
         name="payment_reseller.report_payment_view"
-        file="payment_reseller.report_payment"
+        file="payment_reseller.report_payment_view"
         report_type="qweb-pdf" />
 
     <template id="report_payment_view">

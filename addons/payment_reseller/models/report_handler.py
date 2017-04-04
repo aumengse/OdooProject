@@ -1,9 +1,8 @@
 from openerp import api, fields, models
-from datetime import datetime, timedelta
 import time
 
-class report(models.Model):
-    _name ='payment_reseller.report'
+class report_handler(models.Model):
+    _name ='payment_reseller.report_handler'
     
     rfrom = fields.Date(string="From",
                        default = lambda *a: time.strftime('%Y-%m-%d'))
@@ -21,6 +20,6 @@ class report(models.Model):
     def action_generate(self):
         print '>>>', self.rselection
 
-    
+
 
     

@@ -34,8 +34,8 @@
         'views/payment.xml',
         'views/expense_det.xml',
         'views/expense.xml',
-        'views/report_handler.xml',
         'views/reports.xml',
+        'views/report_handler.xml',
         'views/menuitem.xml',
     ],
     # only loaded in demonstration mode
