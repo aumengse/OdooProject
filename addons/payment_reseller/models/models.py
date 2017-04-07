@@ -98,7 +98,8 @@ class payment(models.Model):
     outstanding = fields.Float(string="Outstanding Balance" ,readonly=True, digits =(16,2))
     Total = fields.Float(string="TOTAL", readonly = True, compute='_compute_total', digits= (16,2))
     color = fields.Integer()
-   
+    sum_rep = fields.Many2one('payment_reseller.report_handler', ondelete="cascade")
+    
     @api.model
     def create(self, vals):
      # FOR INVOICE SEQUENCE   

@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','report'],
 
     # always loaded
     'data': [
@@ -36,6 +36,7 @@
         'views/expense.xml',
         'views/reports.xml',
         'views/report_handler.xml',
+        'views/report_summary.xml',
         'views/menuitem.xml',
     ],
     # only loaded in demonstration mode

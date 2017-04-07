@@ -1,20 +1,40 @@
-<!--<openerp>
-<data>
-	<record id="paperformat_legal_landscape" model="report.paperformat">
-		<field name="name">Legal</field>
-		<field name="default" eval="True"/>
-		<field name="format">Legal</field>
-		<field name="orientation">Landscape</field>
-		<field name="margin_top">5</field>
-		<field name="margin_bottom">5</field>
-		<field name="margin_left">5</field>
-		<field name="margin_right">5</field>
-		<field name="header_line" eval="False"/>
-		<field name="header_spacing">0</field>
-		<field name="dpi">90</field>
-	</record>
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		<record id="paperformat_style" model="report.paperformat">
+		    <field name="name">Summary</field>
+		    <field name="default" eval="True"/>
+		    <field name="format">Legal</field>
+		    <field name="orientation">Landscape</field>
+		    <field name="margin_top">3</field>
+		    <field name="margin_bottom">3</field>
+		    <field name="margin_left">3</field>
+		    <field name="margin_right">3</field>
+		    <field name="header_line" eval="False"/>
+		    <field name="header_spacing">3</field>
+		    <field name="dpi">80</field>
+		</record>
 
-	<report id ="summary_report"
-			model=""/>
-</data>
-</openerp>-->
+		
+		<report
+		        id="rep_summary"
+		        model="payment_reseller.report_handler"
+		        string="Summary Reports"
+		        name="payment_reseller.sum_report_template"
+		        file="payment_reseller.sum_report_template"
+		        report_type="qweb-pdf"
+		        paperformat="paperformat_style"
+		        />
+		        
+		
+		<template id="sum_report_template">
+		    <t t-call="report.html_container">
+				 <t t-foreach="docs" t-as="o">  			
+			            <div class="page">
+			            	<h2 t-esc="recs"></h2>
+			            </div>
+			        </t>
+			    </t>
+		</template>
+	</data>
+</openerp>
