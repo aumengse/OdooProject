@@ -34,6 +34,8 @@
 		<div class="text-center">
 			<img src='/payment_reseller_data/static/src/img/fc_logo.png' style="max-height: 90px;"/>
 			<h3>SUMMARY REPORT</h3>
+			<span> as of </span>
+			<span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d')"/>
     	</div>
     	</div>
     	</div>
