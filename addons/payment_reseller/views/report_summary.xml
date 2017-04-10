@@ -31,10 +31,9 @@
     <template id="custom_layout_header">
 		<div class="header">
 		<div class="row">
-		<div class="col-xs-3">
-			<img t-att-src="payment_reseller_data/static/src/img/fc_logo.png"/>
-    <!-- All your custom code here -->
-
+		<div class="text-center">
+			<img src='/payment_reseller_data/static/src/img/fc_logo.png' style="max-height: 90px;"/>
+			<h3>SUMMARY REPORT</h3>
     	</div>
     	</div>
     	</div>
@@ -43,15 +42,17 @@
 
 		<template id="sum_report_template">
 		    <t t-call="report.html_container">
+				<t t-call="payment_reseller.custom_layout_header"/>
+
 				 <t t-foreach="docs" t-as="o">  			
 			            <div class="page">
-							<t t-call="custom_layout_header"/>
+							<br/><br/><br/><br/><br/><br/><br/><br/><br/>
 							<table class="table table-bordered table-condensed">
 								<tr>
-										<th>Reseller</th>
-										<th>Total Purchase</th>
-										<th>Total Payment</th>
-										<th>Balance</th>
+									<th>Reseller</th>
+									<th>Total Purchase</th>
+									<th>Total Payment</th>
+									<th>Balance</th>
 
 								</tr>
 								<t t-foreach="recs" t-as="rec">
